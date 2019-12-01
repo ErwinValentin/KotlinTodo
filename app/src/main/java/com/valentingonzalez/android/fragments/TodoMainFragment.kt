@@ -21,11 +21,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
+import java.text.DateFormat.getDateInstance
 
 
 class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback{
-    val TaskModel: TaskClass? =null;
     var adapter: TodoTaskRecyclerListAdapter? = null
     var taskViewModel: TaskViewModel? = null
     var viewModelJob = Job()
@@ -66,13 +65,14 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
     }
 
     override fun toggleReminder(task: TaskClass) {
-        Log.d("MAIN REMIND", "reached toggle")
-        Log.d("MAIN",task.toString())
         if(task.reminder){
-            var time: Long = 0
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-            time = dateFormat.parse(task.date).time
-            NotificationManagerService().sendNotification(task.id!!,task.name,time, requireActivity())
+            val dateFormat = getDateInstance()
+            val str = task.date!!
+            val time = dateFormat.parse(str)?.time
+            //var time: Long = 0
+            //val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            //time = dateFormat.parse(task.date).time
+            NotificationManagerService().sendNotification(task.id!!,task.name,time!!, requireActivity())
             insertScope.launch {
                 taskViewModel!!.insert(task)
                 //getTasks(adapter!!)
@@ -87,22 +87,20 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
         }
 
     }
-    suspend fun isCompleted(task: TaskClass){
+    private suspend fun isCompleted(task: TaskClass){
         task.done = true
-        if(task.reminder) {
-            Toast.makeText(requireContext(), "task must be removed from alarms", Toast.LENGTH_SHORT).show()
-        }
+        NotificationManagerService().cancelNotification(task.id!!)
         task.reminder = false
         taskViewModel!!.insert(task)
         getTasks(adapter!!)
     }
 
-    fun getNotCompletedTasks(adapter: TodoTaskRecyclerListAdapter){
+    private fun getNotCompletedTasks(adapter: TodoTaskRecyclerListAdapter){
         uiScope.launch {
             getTasks(adapter)
         }
     }
-    suspend fun getTasks(adapter: TodoTaskRecyclerListAdapter){
+    private suspend fun getTasks(adapter: TodoTaskRecyclerListAdapter){
         taskViewModel?.getNotCompleted()?.observe(this, object: Observer<List<TaskClass>> {
             override fun onChanged(t: List<TaskClass>?) {
                 adapter.setList(t!!)

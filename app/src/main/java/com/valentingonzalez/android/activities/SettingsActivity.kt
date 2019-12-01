@@ -32,4 +32,8 @@ class SettingsActivity: AppCompatActivity() {
     fun deleteAllTasks(){
         taskViewModel!!.deleteAll()
     }
+
+    fun printLog(view: View) {
+        //TODO write all saved tasks to a file
+    }
 }

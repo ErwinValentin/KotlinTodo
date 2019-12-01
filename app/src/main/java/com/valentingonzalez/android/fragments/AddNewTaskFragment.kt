@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
-import java.text.SimpleDateFormat
+import java.text.DateFormat.getDateInstance
 import java.util.*
 
 
@@ -19,13 +19,13 @@ class AddNewTaskFragment: DialogFragment() {
     override fun onStart() {
         super.onStart()
         if (dialog != null) {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT;
-            val height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            dialog!!.window?.setLayout(width, height);
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.WRAP_CONTENT
+            dialog!!.window?.setLayout(width, height)
         }
     }
 
-    var listener: AddTaskInterface? = null;
+    var listener: AddTaskInterface? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(com.valentingonzalez.android.R.layout.add_task_fragment, container, false)
         this.dialog?.setTitle("Add New Task")
@@ -55,20 +55,15 @@ class AddNewTaskFragment: DialogFragment() {
                 tilDate.error = "Please select a date"
                 err = true
             }else{
-                val longdateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm:ss")
-                val shortdateFormat = SimpleDateFormat("MM/dd/yyyy")
+                //val shortdateFormat = SimpleDateFormat("MM/dd/yyyy")
+                val shortdateFormat = getDateInstance()
                 var convertedDate: Date? = Date()
                 try{
                     convertedDate = shortdateFormat.parse(taskDate.text.toString())
                     tilDate.error = ""
                 }catch (e: Exception){
-                    try{
-                        convertedDate = longdateFormat.parse(taskDate.text.toString())
-                        tilDate.error = ""
-                    }catch(e:Exception){
-                        tilDate.error = "Please enter a valid datetime"
-                        err = true
-                    }
+                    tilDate.error = "Please enter a valid date"
+                    err = true
                 }
             }
 

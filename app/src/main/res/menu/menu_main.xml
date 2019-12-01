@@ -3,11 +3,14 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.valentingonzalez.android.activities.MainActivity">
 
+    <item android:id="@+id/add_new_task"
+            android:title="Add a new Task"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_playlist_add_white_24dp" />
     <item android:id="@+id/action_about"
           android:title="About the App"
           app:showAsAction="ifRoom"
-          android:icon="@drawable/ic_info_outline_white_24dp"
-    />
+          android:icon="@drawable/ic_info_outline_white_24dp" />
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           app:showAsAction="ifRoom"

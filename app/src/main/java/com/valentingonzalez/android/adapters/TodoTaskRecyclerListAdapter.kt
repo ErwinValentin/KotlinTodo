@@ -13,7 +13,7 @@ import com.valentingonzalez.android.R
 import com.valentingonzalez.android.database.TaskClass
 
 class TodoTaskRecyclerListAdapter
-internal constructor(context : Context, callback: TodoTaskRecyclerListAdapter.OnClickCallback): RecyclerView.Adapter<TodoTaskRecyclerListAdapter.TodoTaskListViewHolder>(){
+internal constructor(context : Context, callback: OnClickCallback): RecyclerView.Adapter<TodoTaskRecyclerListAdapter.TodoTaskListViewHolder>(){
 
     /*TODO
         if a task is past due, change the background or smtng
@@ -42,7 +42,7 @@ internal constructor(context : Context, callback: TodoTaskRecyclerListAdapter.On
     override fun onBindViewHolder(holder: TodoTaskListViewHolder, position: Int) {
         if(todoTaskList != null){
             val task = todoTaskList!![position]
-            holder.taskDescription.text = task.name
+            holder.taskDescription.text = holder.itemView.context.getString(R.string.task_description_testing,task.id,task.name)
             holder.taskDueDate.text = task.date.toString()
             if(task.done) holder.taskDone.isChecked = true
             //if(task.reminder) holder.taskAlarm

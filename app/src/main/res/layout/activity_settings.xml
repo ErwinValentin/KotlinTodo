@@ -2,15 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-<androidx.appcompat.widget.AppCompatTextView
+              android:layout_height="match_parent"
+        android:layout_margin="8dp">
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Data Management"/>
+        android:text="Data Management"
+        android:textAllCaps="true"/>
+    <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"/>
     <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DELETE ALL DATA"
-            android:textColor="@android:color/white"
-            android:onClick="deleteAll"/>
+            android:onClick="deleteAll"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_margin="6dp"/>
+    <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="printLog"
+            android:text="Print Tasks"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_margin="6dp"/>
 </LinearLayout>

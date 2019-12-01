@@ -20,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnClickCallback{
-    val TaskModel: TaskClass? =null;
+    val TaskModel: TaskClass? =null
     var taskViewModel: TaskViewModel? = null
     var viewModelJob = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)

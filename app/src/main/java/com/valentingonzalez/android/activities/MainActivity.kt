@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProviders
@@ -25,12 +24,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
+import java.text.DateFormat.getDateInstance
 
 class MainActivity : AppCompatActivity(), AddNewTaskFragment.AddTaskInterface {
     private var TAB_NUMBER = 2
-    private lateinit var viewPager:ViewPager;
-    private lateinit var tabLayout:TabLayout;
+    private lateinit var viewPager:ViewPager
+    private lateinit var tabLayout:TabLayout
     var taskViewModel: TaskViewModel? = null
     var viewModelJob = Job()
     val uiScope = CoroutineScope(Dispatchers.IO + viewModelJob)
@@ -66,20 +65,21 @@ class MainActivity : AppCompatActivity(), AddNewTaskFragment.AddTaskInterface {
         when (item.itemId) {
             R.id.action_settings -> openSettings()
             R.id.action_about -> openAbout()
+            R.id.add_new_task -> addNewTask()
             else -> super.onOptionsItemSelected(item)
         }
         return true
     }
-    fun openSettings(){
+    private fun openSettings(){
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
 
     }
-    fun openAbout(){
+    private fun openAbout(){
         val intent = Intent(this, AboutActivity::class.java)
         startActivity(intent)
     }
-    fun addNewTask(view: View){
+    private fun addNewTask(){
         val fm = supportFragmentManager
         val addFragment = AddNewTaskFragment()
         addFragment.show(fm,"Add New Task")
@@ -91,22 +91,23 @@ class MainActivity : AppCompatActivity(), AddNewTaskFragment.AddTaskInterface {
             insertNewTask(task)
         }
     }
-    fun insertNewTask(task: TaskClass){
+    private fun insertNewTask(task: TaskClass){
         val tid:Long = taskViewModel!!.insert(task)
         task.id = tid
         scheduleNotification(task)
     }
 
 
-    fun scheduleNotification(task: TaskClass){
+    private fun scheduleNotification(task: TaskClass){
         if(task.reminder){
-            var time: Long = 0
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-            time = dateFormat.parse(task.date).time
+            //val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            val dateFormat = getDateInstance()
+            val str = task.date!!
+            val time = dateFormat.parse(str)?.time
             Log.d("MAIN",task.id.toString())
             Log.d("MAIN",task.name)
             Log.d("MAIN",time.toString())
-            NotificationManagerService().sendNotification(task.id!!,task.name,time, this)
+            NotificationManagerService().sendNotification(task.id!!,task.name,time!!, this)
         }
     }
 }

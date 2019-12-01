@@ -1,5 +1,6 @@
 package com.valentingonzalez.android.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ internal constructor(context : Context, callback:OnClickCallback): RecyclerView.
         clickCallback = callback
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompletedTaskRecyclerListAdapter.CompletedTaskListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompletedTaskListViewHolder {
         val itemView = inflater.inflate(R.layout.task_complete_item,parent,false)
         return CompletedTaskListViewHolder(itemView)
     }
@@ -35,10 +36,12 @@ internal constructor(context : Context, callback:OnClickCallback): RecyclerView.
             0
     }
 
+    @SuppressLint("NewApi")
     override fun onBindViewHolder(holder: CompletedTaskListViewHolder, position: Int) {
         if(todoTaskList != null){
             val task = todoTaskList!![position]
-            holder.taskDescription.text = task.id.toString() + " : " +task.name
+            holder.taskDescription.text = holder.itemView.context.getString(R.string.task_description_testing,task.id,task.name)
+                //task.id.toString() + " : " +task.name
             holder.taskDueDate.text = task.date.toString()
             //if(task.done) holder.taskDone.isChecked = true
             //if(task.reminder) holder.taskAlarm
