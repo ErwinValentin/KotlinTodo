@@ -1,5 +1,6 @@
 package com.valentingonzalez.android.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
     var taskViewModel: TaskViewModel? = null
     var viewModelJob = Job()
     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    val insertScope = CoroutineScope(Dispatchers.IO + viewModelJob)
     private var adapter: CompletedTaskRecyclerListAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,13 +90,26 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
     override fun handleDeleteClick(task: TaskClass) {
         //Toast.makeText(requireContext(),"Delete Not Implemented!", Toast.LENGTH_SHORT).show()
         //TODO show confirmation dialog
-        uiScope.launch {
-            deleteTask(task)
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Confirm Delete Task")
+        builder.setMessage("Are you sure you want to Delete: "+task.name)
+        builder.setPositiveButton("YES")
+        { dialogInterface, i ->
+            insertScope.launch {
+                deleteTask(task)
+            }
         }
+        builder.setNegativeButton("NO")
+        { dialogInterface, i ->
+            Toast.makeText(requireActivity(),"Delete Canceled",Toast.LENGTH_SHORT).show()
+        }
+        val dialog = builder.create()
+        dialog.show()
+
     }
 
-    suspend fun deleteTask(task: TaskClass){
+    fun deleteTask(task: TaskClass){
         taskViewModel!!.delete(task)
-        getTasks(adapter!!)
+        //getTasks(adapter!!)
     }
 }

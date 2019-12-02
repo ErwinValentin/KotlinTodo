@@ -1,5 +1,6 @@
 package com.valentingonzalez.android.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ class AboutActivity : AppCompatActivity() {
     }
 
     fun openRepo(view: View) {
-        //TODO open a webview linking the repository
+        val intent = Intent(this,WebViewActivity::class.java)
+        startActivity(intent)
     }
 }

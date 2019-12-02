@@ -92,7 +92,7 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
         NotificationManagerService().cancelNotification(task.id!!)
         task.reminder = false
         taskViewModel!!.insert(task)
-        getTasks(adapter!!)
+//        getTasks(adapter!!)
     }
 
     private fun getNotCompletedTasks(adapter: TodoTaskRecyclerListAdapter){

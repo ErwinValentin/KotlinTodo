@@ -39,7 +39,7 @@ class AddNewTaskFragment: DialogFragment() {
         val btnAccept = rootView.findViewById<MaterialButton>(com.valentingonzalez.android.R.id.add_task_button)
 
         btnCancel.setOnClickListener {
-            Toast.makeText(activity, "action cancelled", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, "action cancelled", Toast.LENGTH_SHORT).show()
             dismiss()
         }
 
