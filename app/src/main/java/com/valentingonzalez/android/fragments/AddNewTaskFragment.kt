@@ -1,16 +1,17 @@
 package com.valentingonzalez.android.fragments
 
+
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import com.valentingonzalez.android.R
 import java.text.DateFormat.getDateInstance
 import java.util.*
 
@@ -27,16 +28,32 @@ class AddNewTaskFragment: DialogFragment() {
 
     var listener: AddTaskInterface? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(com.valentingonzalez.android.R.layout.add_task_fragment, container, false)
+        val rootView = inflater.inflate(R.layout.add_task_fragment, container, false)
         this.dialog?.setTitle("Add New Task")
 
-        val tilDesc = rootView.findViewById<TextInputLayout>(com.valentingonzalez.android.R.id.til_task_description)
-        val tilDate = rootView.findViewById<TextInputLayout>(com.valentingonzalez.android.R.id.til_task_date)
-        val taskDescription = rootView.findViewById<TextView>(com.valentingonzalez.android.R.id.tv_task_description)
-        val taskDate = rootView.findViewById<TextView>(com.valentingonzalez.android.R.id.tv_task_date)
-        val cbReminder = rootView.findViewById<CheckBox>(com.valentingonzalez.android.R.id.cb_reminder)
-        val btnCancel = rootView.findViewById<MaterialButton>(com.valentingonzalez.android.R.id.cancel_add_button)
-        val btnAccept = rootView.findViewById<MaterialButton>(com.valentingonzalez.android.R.id.add_task_button)
+        val tilDesc = rootView.findViewById<TextInputLayout>(R.id.til_task_description)
+        val tilDate = rootView.findViewById<TextInputLayout>(R.id.til_task_date)
+        val taskDescription = rootView.findViewById<TextView>(R.id.tv_task_description)
+        val taskDate = rootView.findViewById<TextView>(R.id.tv_task_date)
+        val cbReminder = rootView.findViewById<CheckBox>(R.id.cb_reminder)
+        val openDatePicker = rootView.findViewById<ImageButton>(R.id.open_date_picker)
+        val btnCancel = rootView.findViewById<MaterialButton>(R.id.cancel_add_button)
+        val btnAccept = rootView.findViewById<MaterialButton>(R.id.add_task_button)
+
+
+        openDatePicker.setOnClickListener{
+            val calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener{ datePicker: DatePicker, year:Int, month: Int, day:Int ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month+1)
+                calendar.set(Calendar.DAY_OF_MONTH, day)
+                Toast.makeText(requireContext(),calendar.time.toString(), Toast.LENGTH_SHORT).show()
+
+                taskDate.text = "$day/${month+1}/$year"
+            },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
+
+            datePicker.show()
+        }
 
         btnCancel.setOnClickListener {
             //Toast.makeText(activity, "action cancelled", Toast.LENGTH_SHORT).show()
@@ -57,9 +74,9 @@ class AddNewTaskFragment: DialogFragment() {
             }else{
                 //val shortdateFormat = SimpleDateFormat("MM/dd/yyyy")
                 val shortdateFormat = getDateInstance()
-                var convertedDate: Date? = Date()
+                //var convertedDate: Date? = Date()
                 try{
-                    convertedDate = shortdateFormat.parse(taskDate.text.toString())
+                    shortdateFormat.parse(taskDate.text.toString())
                     tilDate.error = ""
                 }catch (e: Exception){
                     tilDate.error = "Please enter a valid date"

@@ -55,9 +55,9 @@ internal constructor(context : Context, callback:OnClickCallback): RecyclerView.
 
     inner class CompletedTaskListViewHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
-        val taskDescription: TextView = itemView.findViewById(R.id.taskCompletedDescription)
+        val taskDescription: TextView = itemView.findViewById(R.id.task_completed_description)
         val taskDueDate: TextView = itemView.findViewById(R.id.taskCompletedDueDate)
-        val taskReschedule : ImageButton = itemView.findViewById(R.id.taskCompletedReschedule)
+        val taskReschedule : ImageButton = itemView.findViewById(R.id.task_completed_reschedule)
         val taskDelete : ImageButton = itemView.findViewById(R.id.task_completed_delete)
 
         init{
@@ -70,7 +70,7 @@ internal constructor(context : Context, callback:OnClickCallback): RecyclerView.
             if(clickCallback!= null) {
                 if(view == itemView)
                     clickCallback!!.handleClick(adapterPosition)
-                if(view == itemView.findViewById( R.id.taskCompletedReschedule))
+                if(view == itemView.findViewById( R.id.task_completed_reschedule))
                     clickCallback!!.handleRescheduleClick(todoTaskList!!.get(adapterPosition))
                 if(view == itemView.findViewById( R.id.task_completed_delete))
                     clickCallback!!.handleDeleteClick(todoTaskList!!.get(adapterPosition))

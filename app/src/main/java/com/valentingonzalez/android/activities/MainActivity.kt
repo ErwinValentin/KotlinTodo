@@ -92,8 +92,7 @@ class MainActivity : AppCompatActivity(), AddNewTaskFragment.AddTaskInterface {
         }
     }
     private fun insertNewTask(task: TaskClass){
-        val tid:Long = taskViewModel!!.insert(task)
-        task.id = tid
+        task.id = taskViewModel!!.insert(task)
         scheduleNotification(task)
     }
 

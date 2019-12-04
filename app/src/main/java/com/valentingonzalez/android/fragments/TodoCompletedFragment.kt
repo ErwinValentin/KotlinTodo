@@ -1,10 +1,12 @@
 package com.valentingonzalez.android.fragments
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnClickCallback{
     val TaskModel: TaskClass? =null
@@ -73,7 +76,7 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
         }
     }
 
-    suspend fun rescheduleTask(task: TaskClass){
+    fun rescheduleTask(task: TaskClass){
         //TODO start edit fragment, set a callback to receive the new task's date and reminder
         task.done = false
         //TODO if need reminder, then
@@ -83,13 +86,28 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
             send new alarm
         * */
 
-        taskViewModel!!.insert(task)
-        getTasks(adapter!!)
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener{ datePicker: DatePicker, year:Int, month: Int, day:Int ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month+1)
+            calendar.set(Calendar.DAY_OF_MONTH, day)
+            Toast.makeText(requireContext(),calendar.time.toString(), Toast.LENGTH_SHORT).show()
+            task.date = "$day/${month+1}/$year"
+            updateTask(task)
+        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
+
+        datePicker.show()
+
+
+        //getTasks(adapter!!)
     }
 
+    fun updateTask(task: TaskClass){
+        insertScope.launch {
+            taskViewModel!!.insert(task)
+        }
+    }
     override fun handleDeleteClick(task: TaskClass) {
-        //Toast.makeText(requireContext(),"Delete Not Implemented!", Toast.LENGTH_SHORT).show()
-        //TODO show confirmation dialog
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Confirm Delete Task")
         builder.setMessage("Are you sure you want to Delete: "+task.name)
@@ -110,6 +128,5 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
 
     fun deleteTask(task: TaskClass){
         taskViewModel!!.delete(task)
-        //getTasks(adapter!!)
     }
 }

@@ -13,24 +13,24 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/taskCompletedDueDate" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/taskCompletedDescription"
+                app:layout_constraintBottom_toTopOf="@+id/task_completed_description"
                 app:layout_constraintVertical_bias="0.61" android:layout_marginStart="8dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp" android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/taskCompletedReschedule" android:layout_marginRight="8dp"/>
+                app:layout_constraintEnd_toStartOf="@+id/task_completed_reschedule" android:layout_marginRight="8dp"/>
         <TextView
                 android:text="Task Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/taskCompletedDescription"
+                android:id="@+id/task_completed_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/taskCompletedReschedule"
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/task_completed_reschedule"
                 android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
         <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_event_black_24dp"
-                android:id="@+id/taskCompletedReschedule" android:layout_marginTop="8dp"
+                android:id="@+id/task_completed_reschedule" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@+id/task_completed_delete"
                 android:layout_marginEnd="8dp" android:layout_marginRight="8dp"

@@ -40,14 +40,16 @@
                     android:inputType="datetime"
                     android:id="@+id/tv_task_date"/>
     </com.google.android.material.textfield.TextInputLayout>
+
         <ImageButton
+                android:id="@+id/open_date_picker"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
-                app:srcCompat="@drawable/ic_event_black_24dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_event_black_24dp" />
 </LinearLayout>
     <CheckBox
             android:text="Add Reminder?"
