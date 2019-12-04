@@ -10,7 +10,7 @@ Room and Live Data
 Coroutines
 ```
 
-Libraries used in this proyect
+Libraries used in this project
 ```
 'androidx.appcompat:appcompat:1.1.0'
 'androidx.core:core-ktx:1.1.0'
