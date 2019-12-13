@@ -16,6 +16,9 @@ interface TaskDAO {
     @Query("SELECT * from tasks WHERE done = 0")
     fun getNotCompleted(): LiveData<List<TaskClass>>
 
+    @Query("SELECT * from tasks WHERE done = 0")
+    fun getNotCompletedAsList():List<TaskClass>
+
     @Query("SELECT * from tasks WHERE done = 1")
     fun getCompleted(): LiveData<List<TaskClass>>
 

@@ -4,4 +4,6 @@
     <string name="todo_tab_label">ToDo</string>
     <string name="completed_tab_label">Completed</string>
     <string name="task_description_testing">%d : %s</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
