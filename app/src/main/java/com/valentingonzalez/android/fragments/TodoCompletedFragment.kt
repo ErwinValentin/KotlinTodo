@@ -77,7 +77,6 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
     }
 
     fun rescheduleTask(task: TaskClass){
-        //TODO start edit fragment, set a callback to receive the new task's date and reminder
         task.done = false
         //TODO if need reminder, then
         /* task.date = new date
@@ -97,9 +96,6 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH))
 
         datePicker.show()
-
-
-        //getTasks(adapter!!)
     }
 
     fun updateTask(task: TaskClass){

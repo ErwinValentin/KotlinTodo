@@ -1,11 +1,9 @@
 package com.valentingonzalez.android.widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.valentingonzalez.android.R
@@ -29,16 +27,17 @@ class WidgetListRemoteViewsFactory(
     intent: Intent
 ):RemoteViewsService.RemoteViewsFactory{
     val EXTRA_ITEM = "com.valentingonzalez.android.widget.EXTRA_ITEM"
+    val WIDGET_ID = "WIDGET_ID"
     private var items= ArrayList<TaskClass>();
     private var count = 0;
     private var widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     var viewModelJob = Job()
-    val uiScope = CoroutineScope(Dispatchers.IO + viewModelJob)
+    val ioScope = CoroutineScope(Dispatchers.IO + viewModelJob)
 
 
 
     override fun onCreate() {
-        getList()
+        this.getList()
     }
 
     override fun getLoadingView(): RemoteViews {
@@ -50,7 +49,7 @@ class WidgetListRemoteViewsFactory(
     }
 
     override fun onDataSetChanged() {
-        getList()
+        readAllTasks()
     }
 
     override fun hasStableIds(): Boolean {
@@ -59,10 +58,10 @@ class WidgetListRemoteViewsFactory(
 
     override fun getViewAt(p0: Int): RemoteViews {
         var item = items[p0]
-        Log.d("widget",item.toString())
+        //Log.d("widget",item.toString())
 
         var intent = Intent(context, MainActivity::class.java)
-        var pendingIntent = PendingIntent.getActivity(context,0,intent,0)
+        //var pendingIntent = PendingIntent.getActivity(context,0,intent,0)
 
 
         var view = RemoteViews(context.packageName, R.layout.widget_list_item)
@@ -72,7 +71,8 @@ class WidgetListRemoteViewsFactory(
         //view.setOnClickPendingIntent(R.id.widget_checkbox, pendingIntent)
 
         val b = Bundle()
-        b.putInt(EXTRA_ITEM, p0)
+        b.putLong(EXTRA_ITEM, item.id!!)
+        b.putInt(WIDGET_ID, widgetId)
         val fillIntent = Intent()
         fillIntent.putExtras(b)
         view.setOnClickFillInIntent(R.id.widget_checkbox, fillIntent)
@@ -91,16 +91,17 @@ class WidgetListRemoteViewsFactory(
     }
 
     override fun onDestroy() {
-        items.clear()
+       // items.clear()
     }
 
     fun getList(){
-        uiScope.launch {
+        ioScope.launch {
             readAllTasks()
         }
     }
 
-    suspend fun readAllTasks(){
+    fun readAllTasks(){
+        items.clear()
         items.addAll(TodoDatabase.getInstance(context)!!.tasksDAO().getNotCompletedAsList())
         count = items.size
     }

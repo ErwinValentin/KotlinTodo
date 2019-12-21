@@ -43,11 +43,6 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         getNotCompletedTasks(adapter!!)
-        /*var list = ArrayList<TaskClass>()
-        list.add(TaskClass(1,"a",Calendar.getInstance().time.toString(),true,false))
-        list.add(TaskClass(2,"b",Calendar.getInstance().time.toString(),false,true))
-        list.add(TaskClass(3,"c",Calendar.getInstance().time.toString(),true,false))
-        adapter.setList(list)*/
     }
 
     override fun handleClick(position: Int) {
@@ -58,7 +53,6 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
     override fun handleChecked(task: TaskClass) {
         insertScope.launch{
             isCompleted(task)
-            //TODO this snackbar flickers
             Snackbar.make(requireView(),task.toString(), Snackbar.LENGTH_LONG).show()
         }
 

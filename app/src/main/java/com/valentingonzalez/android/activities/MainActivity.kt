@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), AddNewTaskFragment.AddTaskInterface {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel::class.java)
 
         viewPager = findViewById(R.id.main_tab_viewpager)
