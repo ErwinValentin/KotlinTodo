@@ -1,5 +1,8 @@
 package com.valentingonzalez.android.fragments
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +20,7 @@ import com.valentingonzalez.android.adapters.TodoTaskRecyclerListAdapter
 import com.valentingonzalez.android.database.TaskClass
 import com.valentingonzalez.android.database.TaskViewModel
 import com.valentingonzalez.android.notifications.NotificationManagerService
+import com.valentingonzalez.android.widget.ListWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -86,7 +90,12 @@ class TodoMainFragment : Fragment(), TodoTaskRecyclerListAdapter.OnClickCallback
         NotificationManagerService().cancelNotification(task.id!!)
         task.reminder = false
         taskViewModel!!.insert(task)
-//        getTasks(adapter!!)
+        val intent = Intent(requireContext(), ListWidget::class.java)
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+        val ids = AppWidgetManager.getInstance(requireContext())
+            .getAppWidgetIds(ComponentName(requireContext(),ListWidget::class.java))
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        requireContext().sendBroadcast(intent)
     }
 
     private fun getNotCompletedTasks(adapter: TodoTaskRecyclerListAdapter){

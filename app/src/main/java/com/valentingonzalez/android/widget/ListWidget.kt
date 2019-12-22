@@ -3,7 +3,6 @@ package com.valentingonzalez.android.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -66,6 +65,7 @@ class ListWidget : AppWidgetProvider() {
         views.setPendingIntentTemplate(R.id.widget_list, toastPendingIntent)
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
+        updateWidgetInfo(context,appWidgetId)
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -74,6 +74,9 @@ class ListWidget : AppWidgetProvider() {
             val taskIndex = intent.getLongExtra(EXTRA_ITEM, -1)
             val widgetId = intent.getIntExtra("WIDGET_ID", -1)
             startDeleteTask(taskIndex, context!!,widgetId)
+        }else if(intent.action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
+            val ids: IntArray = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)!!
+            this.onUpdate(context!!, AppWidgetManager.getInstance(context),ids)
         }
         super.onReceive(context, intent)
     }
@@ -97,8 +100,11 @@ class ListWidget : AppWidgetProvider() {
         val task = database.get(tId)
         task.done = true;
         database.insert(task);
+        updateWidgetInfo(context, wId)
+    }
+
+    private fun updateWidgetInfo(context: Context, wId: Int) {
         val awm = AppWidgetManager.getInstance(context)
-        val wids = awm.getAppWidgetIds(ComponentName(context, ListWidget::class.java))
         awm.notifyAppWidgetViewDataChanged(wId, R.id.widget_list)
     }
 

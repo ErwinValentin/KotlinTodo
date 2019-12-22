@@ -2,6 +2,9 @@ package com.valentingonzalez.android.fragments
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +20,7 @@ import com.valentingonzalez.android.R
 import com.valentingonzalez.android.adapters.CompletedTaskRecyclerListAdapter
 import com.valentingonzalez.android.database.TaskClass
 import com.valentingonzalez.android.database.TaskViewModel
+import com.valentingonzalez.android.widget.ListWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -101,6 +105,12 @@ class TodoCompletedFragment : Fragment(), CompletedTaskRecyclerListAdapter.OnCli
     fun updateTask(task: TaskClass){
         insertScope.launch {
             taskViewModel!!.insert(task)
+            val intent = Intent(requireContext(), ListWidget::class.java)
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+            val ids = AppWidgetManager.getInstance(requireContext())
+                .getAppWidgetIds(ComponentName(requireContext(), ListWidget::class.java))
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            requireContext().sendBroadcast(intent)
         }
     }
     override fun handleDeleteClick(task: TaskClass) {
